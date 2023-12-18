@@ -1,0 +1,57 @@
+spring:
+  application:
+    name: newsletter-client
+  profiles:
+    active: dev
+  config:
+    import: optional:configserver:http://localhost:8888
+
+  data:
+    mongodb:
+      port: 27017
+      host: localhost
+      database: news
+  rabbitmq:
+    port: 5672
+    username: guest
+    password: guest
+    host: localhost
+
+
+
+server:
+  port: ${PORT:0}
+
+
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instace_id:${random.value}}
+
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+firebase:
+  credential-file-name: firebase-account.json
+
+logging:
+  level:
+    org:
+      springframework:
+        data:
+          mongodb:
+            core:
+              MongoTemplate: DEBUG
+
+newsLetter:
+  rabbitmq:
+    exchange: newsLetter.exchange
+    rountingkey: newsLetter.news.routingkey
+    queue: newsLetter.queue
+
+api:
+  security:
+    token:
+      secret: ${JWT.SECRET:my-secret-key}
+
